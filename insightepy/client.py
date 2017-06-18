@@ -35,23 +35,37 @@ class API(object):
         except:
             return r.data
 
-    def post_file(self, url, fields):
-        urlfull = 'http://' + HOST_ADDR + ':' + HOST_PORT + ROUTE_PREFIX + url
-        r = requests.post(ROUTE_PREFIX + urlfull, files=fields)
-        try:
-            return json.loads(r.content)
-        except:
-            return r.content
+    def single_extract(
+            self,
+            verbatim, lang,
+            ifterm=True, ifkeyword=True, ifconcept=True,
+            ifpos=True, ifemotion=True, ifsentiment=True,
+            ifHashTags=True, ifMentions=True, ifUrl=True
+            # ifNER=False,
+    ):
+        """
+        Extract insight for a single verbatim
+        :param verbatim: Unicode sentence
+        :param lang: language of the sentence {en/fr/de}
+        :param ifterm: if extract terms
+        :param ifkeyword: if extract keywords
+        :param ifconcept: if extract concepts 
+        :param ifpos: if extract part of speech tags
+        :param ifemotion: if extract emotions
+        :param ifsentiment: if extract sentiments
+        :param ifHashTags: if extract hashtags
+        :param ifMentions: if extract mentions
+        :param ifUrl: if extract urls
+        :return: dict
+        """
+        # TODO enable NER
+        # :param ifNER: if extract named entities
+        ifNER = False
 
-    def single_extract(self,
-                       verbatim, lang,
-                       ifterm=True, ifkeyword=True, ifconcept=True,
-                       ifpos=True, ifemotion=True, ifsentiment=True, ifNER=True,
-                       ifHashTags=True, ifMentions=True, ifUrl=True
-                       ):
+        if not isinstance(verbatim, unicode):
+            raise Exception("Verbatim not of type Unicode")
 
-        # make request
-        r = self.make_request('GET', '/extract', {
+        return self.make_request('GET', '/extract', {
             'verbatim': verbatim,
             'lang': lang,
             'ifterm': ifterm,
@@ -65,7 +79,18 @@ class API(object):
             'ifmention': ifMentions,
             'ifurl': ifUrl,
         })
-        return r
+
+    #
+    # Temporarily Deprecated
+    #  |
+    #  V
+    def post_file(self, url, fields):
+        urlfull = 'http://' + HOST_ADDR + ':' + HOST_PORT + ROUTE_PREFIX + url
+        r = requests.post(ROUTE_PREFIX + urlfull, files=fields)
+        try:
+            return json.loads(r.content)
+        except:
+            return r.content
 
     def _post_verbatim_file(self, filepath):
         # check if exist file
@@ -82,17 +107,19 @@ class API(object):
             traceback.print_exc(file=sys.stdout)
             raise Exception("Encoding Error : File was not found to be utf8 encoded")
 
-    def batch_extract(self,
-                      filepath, lang, dest_dir,
-                      ifterm=True, ifkeyword=True, ifconcept=False,
-                      ifpos=True, ifemotion=True, ifsentiment=True, ifNER=True,
-                      ifHashTags=True, ifMentions=True, ifUrl=True
-                      ):
+    def __batch_extract(
+            self,
+            filepath, lang, dest_dir,
+            ifterm=True, ifkeyword=True, ifconcept=False,
+            ifpos=True, ifemotion=True, ifsentiment=True, ifNER=True,
+            ifHashTags=True, ifMentions=True, ifUrl=True
+    ):
         """
         Post verbatim file
         Make batch extraction request
         Wait for success
         """
+        # TODO make batch extract work
         r = self._post_verbatim_file(filepath)
         if r['s'] and 'filename' in r:
             # make schedule request
