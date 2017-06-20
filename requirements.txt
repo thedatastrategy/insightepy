@@ -1,3 +1,4 @@
 pytest
 urllib3
 requests
+configparser

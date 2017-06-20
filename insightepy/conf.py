@@ -2,10 +2,39 @@ import os, sys
 import logging
 import configparser
 
-INI_FILE = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../conf/conf.ini')
-config = configparser.ConfigParser()
-config.read(INI_FILE)
 
+class __DefaultConf(object):
+    confs = dict(
+        log=dict(
+            level='INFO',
+            log_file='',
+        ),
+        dependencies=dict(
+            locations='',
+        ),
+        server=dict(
+            host='176.31.255.107',
+            port='9500',
+            route_prefix='',
+        ),
+        test=dict(
+            client_id='',
+            client_secret='',
+            auth_token='',
+        )
+    )
+
+    def get(self, section, param):
+        return self.confs[section][param]
+
+
+INI_FILE = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../conf/conf.ini')
+
+if os.path.exists(INI_FILE):
+    config = configparser.ConfigParser()
+    config.read(INI_FILE)
+else:
+    config = __DefaultConf()
 # logger
 fmt = '[%(asctime)s] [%(name)s] [%(levelname)s] %(message)s'
 datefmt = '%Y-%m-%d %H:%M:%S'
@@ -29,4 +58,3 @@ dependency_locations = filter(
 for location in dependency_locations:
     logger.debug('Injecting Dependency: "{}"'.format(location))
     sys.path.append(location)
-
