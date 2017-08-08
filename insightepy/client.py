@@ -40,7 +40,8 @@ class API(object):
             verbatim, lang,
             ifterm=True, ifkeyword=True, ifconcept=True,
             ifpos=True, ifemotion=True, ifsentiment=True,
-            ifHashTags=True, ifMentions=True, ifUrl=True
+            ifHashTags=True, ifMentions=True, ifUrl=True,
+            rmvAllStopWords=True, conceptoption={}
             # ifNER=False,
     ):
         """
@@ -56,6 +57,8 @@ class API(object):
         :param ifHashTags: if extract hashtags
         :param ifMentions: if extract mentions
         :param ifUrl: if extract urls
+        :param rmvAllStopWords: if removing all stopwords
+        :param conceptoption: giving options for concept handle
         :return: dict
         """
         # TODO enable NER
@@ -78,6 +81,8 @@ class API(object):
             'ifhashtags': ifHashTags,
             'ifmention': ifMentions,
             'ifurl': ifUrl,
+            'concept_options': conceptoption,
+            'rmvAllStopWords': rmvAllStopWords,
         })
 
     #
