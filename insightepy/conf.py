@@ -14,7 +14,7 @@ class __DefaultConf(object):
             locations='',
         ),
         server=dict(
-            host='176.31.255.107',
+            host='localhost',
             port='9500',
             route_prefix='',
         ),
