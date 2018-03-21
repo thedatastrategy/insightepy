@@ -1,12 +1,13 @@
-import os, sys
-import logging
 import configparser
+import logging
+import os
+import sys
 
 
 class __DefaultConf(object):
     confs = dict(
         log=dict(
-            level='INFO',
+            level='DEBUG',
             log_file='',
         ),
         dependencies=dict(
@@ -35,6 +36,12 @@ if os.path.exists(INI_FILE):
     config.read(INI_FILE)
 else:
     config = __DefaultConf()
+
+
+def get_config(section, param):
+    return config.get(section, param)
+
+
 # logger
 fmt = '[%(asctime)s] [%(name)s] [%(levelname)s] %(message)s'
 datefmt = '%Y-%m-%d %H:%M:%S'

@@ -1,1 +1,1 @@
-from client import API
+from insightepy.client import API
