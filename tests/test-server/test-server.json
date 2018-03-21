@@ -1,5 +1,6 @@
 {
   "extract": {
-    "message": "This is just a dummy response"
+    "message": "This is just a dummy response",
+    "status": true
   }
 }

@@ -36,45 +36,18 @@ class API(object):
     def single_extract(
             self,
             verbatim, lang,
-            ifterm=True, ifkeyword=True, ifconcept=True,
-            ifpos=True, ifemotion=True, ifsentiment=True,
-            ifHashTags=True, ifMentions=True, ifUrl=True
-            # ifNER=False,
     ):
         """
         Extract insight for a single verbatim
         :param verbatim: Unicode sentence
         :param lang: language of the sentence {en/fr/de}
-        :param ifterm: if extract terms
-        :param ifkeyword: if extract keywords
-        :param ifconcept: if extract concepts 
-        :param ifpos: if extract part of speech tags
-        :param ifemotion: if extract emotions
-        :param ifsentiment: if extract sentiments
-        :param ifHashTags: if extract hashtags
-        :param ifMentions: if extract mentions
-        :param ifUrl: if extract urls
         :return: dict
         """
         logger.info('Running Single Extract on: {}'.format(verbatim))
 
-        # TODO enable NER
-        # :param ifNER: if extract named entities
-        ifNER = False
-
         return self.make_request('GET', '/extract', {
             'verbatim': verbatim,
             'lang': lang,
-            'ifterm': ifterm,
-            'ifkeyword': ifkeyword,
-            'ifconcept': ifconcept,
-            'ifpos': ifpos,
-            'ifemotion': ifemotion,
-            'ifsentiment': ifsentiment,
-            'ifner': ifNER,
-            'ifhashtags': ifHashTags,
-            'ifmention': ifMentions,
-            'ifurl': ifUrl,
         })
 
     def _get_resource(self, _type, name, dest_dir):

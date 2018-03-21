@@ -11,7 +11,7 @@ def test_on_get():
     )
     for doc in rs.corpus:
         res = api.single_extract(
-            verbatim=doc['text'].decode('utf-8'),
+            verbatim=doc['text'],
             lang=doc['lang']
         )
-        assert res['status'] == 'success'
+        assert res['status']
