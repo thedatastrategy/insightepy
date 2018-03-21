@@ -1,8 +1,6 @@
-import pytest
-
-from insightepy import conf
-from insightepy.tests import resources as rs
 import insightepy
+from insightepy import conf
+from tests import resources as rs
 
 
 def test_on_get():
