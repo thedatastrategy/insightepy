@@ -12,6 +12,8 @@ class Extractor(object):
 
 
 class NGram(Extractor):
+    _label_ = 'NGram'
+
     def __init__(self, name='ngram', n=3):
         self.name = name
         self.n = n
@@ -23,6 +25,7 @@ class NGram(Extractor):
 
     def to_dict(self):
         return dict(
+            label=self._label_,
             name=self.name,
             n=self.n
         )
