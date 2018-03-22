@@ -29,3 +29,37 @@ class NGram(Extractor):
             name=self.name,
             n=self.n
         )
+
+
+class HashTag(Extractor):
+    _label_ = 'HashTag'
+
+    def __init__(self, name='hashtag'):
+        self.name = name
+        self._validate_params()
+
+    def _validate_params(self):
+        pass
+
+    def to_dict(self):
+        return dict(
+            label=self._label_,
+            name=self.name,
+        )
+
+
+class Mention(Extractor):
+    _label_ = 'Mention'
+
+    def __init__(self, name='mention'):
+        self.name = name
+        self._validate_params()
+
+    def _validate_params(self):
+        pass
+
+    def to_dict(self):
+        return dict(
+            label=self._label_,
+            name=self.name,
+        )
