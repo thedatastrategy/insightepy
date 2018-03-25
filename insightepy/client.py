@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
+import traceback
 from typing import Dict, List
 
 from urllib3 import HTTPConnectionPool
@@ -45,8 +46,10 @@ class API(object):
                 return response
             except Exception as e:
                 logger.error('Encountered error while parsing response: {}'.format(str(e)))
+                logger.error(traceback.format_exc())
         else:
             logger.error('Got a NOT OK Response Code: status={}'.format(r.status))
+            logger.error(traceback.format_exc())
 
     def say_hello(self):
         logger.info('Running Say Hello')
@@ -56,7 +59,7 @@ class API(object):
             dict()
         )
 
-    def single_extract(self, lang: str, verbatim: str, extractors: List[Extractor] = None):
+    def single_extract(self, lang: str, verbatim: str, extractors: List[Extractor] = None) -> Response:
         """
         Extract insight for a single verbatim
         :param lang: language of the sentence {en/fr/de}

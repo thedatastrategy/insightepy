@@ -1,4 +1,11 @@
+#
+# Test Related
+# ---------------------------------
 
+test: test-local
+
+test-local:
+	pytest -v -rxs tests/
 
 test-server-install:
 	cd ./test-server && npm install

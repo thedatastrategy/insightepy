@@ -14,4 +14,4 @@ def test_on_get():
             verbatim=doc['text'],
             lang=doc['lang']
         )
-        assert res['status']
+        assert res.status
