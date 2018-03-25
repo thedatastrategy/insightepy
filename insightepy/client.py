@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
 import json
+import traceback
+from typing import Dict, List
 
 from urllib3 import HTTPConnectionPool
 
 from insightepy import conf
 from insightepy.core import Logger
+from insightepy.extractors import Extractor
+from insightepy.response import Response
 
 HOST_ADDR = conf.config.get('server', 'host')
 HOST_PORT = conf.config.get('server', 'port')
@@ -14,75 +18,62 @@ logger = Logger('InsightePy')
 
 
 class API(object):
-    def __init__(self, client_id, client_secret, auth_token):
-        logger.info('Hello from InsightePy')
+    def __init__(self, client_id: str, client_secret: str, auth_token: str) -> None:
+        self.print_hello_message()
         self._cid = client_id
         self._csecret = client_secret
         self._auth_token = auth_token
         self.pool = HTTPConnectionPool(HOST_ADDR + ':' + HOST_PORT, timeout=2)
 
-    def make_request(self, method, url, fields):
+    @staticmethod
+    def print_hello_message():
+        logger.info('--------------------------------')
+        logger.info('----- Hello from InsightePy ----')
+        logger.info('--------------------------------')
+
+    def make_request(self, method: str, url: str, fields: Dict[str, str]) -> Response:
         # adding user information to field
         fields['cid'] = self._cid
         fields['csecret'] = self._csecret
         fields['authtoken'] = self._auth_token
         logger.debug('Making request with: {}'.format(fields))
         r = self.pool.request(method, ROUTE_PREFIX + url, fields=fields)
-        try:
-            return json.loads(r.data)
-        except:
-            return r.data
+        if r.status == 200:
+            logger.debug('Got raw response:  {}'.format(r.data))
+            try:
+                response = Response(json.loads(r.data))
+                logger.debug('Built Response: {}'.format(response.__repr__()))
+                return response
+            except Exception as e:
+                logger.error('Encountered error while parsing response: {}'.format(str(e)))
+                logger.error(traceback.format_exc())
+        else:
+            logger.error('Got a NOT OK Response Code: status={}'.format(r.status))
+            logger.error(traceback.format_exc())
 
-    def single_extract(
-            self,
-            verbatim, lang,
-            ifterm=True, ifkeyword=True, ifconcept=True,
-            ifpos=True, ifemotion=True, ifsentiment=True,
-            ifHashTags=True, ifMentions=True, ifUrl=True
-            # ifNER=False,
-    ):
+    def say_hello(self):
+        logger.info('Running Say Hello')
+        return self.make_request(
+            'GET',
+            '/hello',
+            dict()
+        )
+
+    def single_extract(self, lang: str, verbatim: str, extractors: List[Extractor] = None) -> Response:
         """
         Extract insight for a single verbatim
-        :param verbatim: Unicode sentence
         :param lang: language of the sentence {en/fr/de}
-        :param ifterm: if extract terms
-        :param ifkeyword: if extract keywords
-        :param ifconcept: if extract concepts 
-        :param ifpos: if extract part of speech tags
-        :param ifemotion: if extract emotions
-        :param ifsentiment: if extract sentiments
-        :param ifHashTags: if extract hashtags
-        :param ifMentions: if extract mentions
-        :param ifUrl: if extract urls
-        :return: dict
+        :param verbatim: Unicode sentence
+        :param extractors: list of feature extractors
+        :return: dict response from Compute Engine
         """
         logger.info('Running Single Extract on: {}'.format(verbatim))
-
-        # TODO enable NER
-        # :param ifNER: if extract named entities
-        ifNER = False
-
-        return self.make_request('GET', '/extract', {
-            'verbatim': verbatim,
-            'lang': lang,
-            'ifterm': ifterm,
-            'ifkeyword': ifkeyword,
-            'ifconcept': ifconcept,
-            'ifpos': ifpos,
-            'ifemotion': ifemotion,
-            'ifsentiment': ifsentiment,
-            'ifner': ifNER,
-            'ifhashtags': ifHashTags,
-            'ifmention': ifMentions,
-            'ifurl': ifUrl,
-        })
-
-    def _get_resource(self, _type, name, dest_dir):
-        url = '/resources/get/' + _type + '/' + name
-        r = self.make_request('GET', url, {})
-        with open(dest_dir + name, 'w') as new_file:
-            new_file.write(r)
-        new_file.close()
-
-        # return filename
-        return dest_dir + name
+        return self.make_request(
+            'GET',
+            '/extract',
+            dict(
+                verbatim=verbatim,
+                lang=lang,
+                extractors=json.dumps([_.to_dict() for _ in extractors] if extractors else [])
+            )
+        )

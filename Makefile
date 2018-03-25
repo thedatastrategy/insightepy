@@ -1,9 +1,16 @@
+#
+# Test Related
+# ---------------------------------
 
+test: test-local
+
+test-local:
+	pytest -v -rxs tests/
 
 test-server-install:
-	cd tests/test-server && npm install
+	cd ./test-server && npm install
 
 test-server-run:
-	./tests/test-server/node_modules/.bin/json-server \
-		--port 9500 \
-		./tests/test-server/test-server.json
+	./test-server/node_modules/.bin/json-server \
+		--port 9500 --watch \
+		./test-server/test-server.json

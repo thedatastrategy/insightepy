@@ -7,14 +7,14 @@ import sys
 class __DefaultConf(object):
     confs = dict(
         log=dict(
-            level='DEBUG',
+            level='INFO',
             log_file='',
         ),
         dependencies=dict(
             locations='',
         ),
         server=dict(
-            host='localhost',
+            host='176.31.255.107',
             port='9500',
             route_prefix='',
         ),
