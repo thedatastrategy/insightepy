@@ -9,13 +9,13 @@ class Extractor(object):
 
     def to_dict(self) -> Dict[str, str]:
         return dict(
-            label=self._label_,
+            label=self.label,
             name=self.name,
         )
 
 
 class NGram(Extractor):
-    _label_ = 'NGram'
+    label = 'NGram'
 
     def __init__(self, name='ngram', n=3):
         self.name = name
@@ -28,14 +28,14 @@ class NGram(Extractor):
 
     def to_dict(self):
         return dict(
-            label=self._label_,
+            label=self.label,
             name=self.name,
             n=self.n
         )
 
 
 class HashTag(Extractor):
-    _label_ = 'HashTag'
+    label = 'HashTag'
 
     def __init__(self, name='hashtag'):
         self.name = name
@@ -43,7 +43,7 @@ class HashTag(Extractor):
 
 
 class Mention(Extractor):
-    _label_ = 'Mention'
+    label = 'Mention'
 
     def __init__(self, name='mention'):
         self.name = name
@@ -51,7 +51,7 @@ class Mention(Extractor):
 
 
 class Url(Extractor):
-    _label_ = 'Url'
+    label = 'Url'
 
     def __init__(self, name='url'):
         self.name = name
@@ -59,7 +59,7 @@ class Url(Extractor):
 
 
 class Stemmer(Extractor):
-    _label_ = 'Stemmer'
+    label = 'Stemmer'
 
     def __init__(self, name='stem'):
         self.name = name
@@ -67,7 +67,7 @@ class Stemmer(Extractor):
 
 
 class Sentiment(Extractor):
-    _label_ = 'Sentiment'
+    label = 'Sentiment'
 
     def __init__(self, name='sentiment'):
         self.name = name
@@ -75,7 +75,7 @@ class Sentiment(Extractor):
 
 
 class POS(Extractor):
-    _label_ = 'POS'
+    label = 'POS'
 
     def __init__(self, name='pos'):
         self.name = name
@@ -83,7 +83,7 @@ class POS(Extractor):
 
 
 class Ontology(Extractor):
-    _label_ = 'Ontology'
+    label = 'Ontology'
 
     def __init__(self, name='ontology', from_='lem'):
         self.name = name
@@ -92,14 +92,14 @@ class Ontology(Extractor):
 
     def to_dict(self):
         return dict(
-            label=self._label_,
+            label=self.label,
             name=self.name,
             from_=self.from_
         )
 
 
 class Lemmer(Extractor):
-    _label_ = 'Lemmer'
+    label = 'Lemmer'
 
     def __init__(self, name='lem', if_remove_stopwords=True, if_remove_noise=True):
         self.name = name
@@ -109,7 +109,7 @@ class Lemmer(Extractor):
 
     def to_dict(self):
         return dict(
-            label=self._label_,
+            label=self.label,
             name=self.name,
             if_remove_noise=self.if_remove_noise,
             if_remove_stopwords=self.if_remove_stopwords
@@ -117,7 +117,7 @@ class Lemmer(Extractor):
 
 
 class Keyword(Extractor):
-    _label_ = 'Keyword'
+    label = 'Keyword'
 
     def __init__(self, name='keyword'):
         self.name = name

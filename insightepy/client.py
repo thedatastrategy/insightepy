@@ -42,7 +42,7 @@ class API(object):
             logger.debug('Got raw response:  {}'.format(r.data))
             try:
                 response = Response(json.loads(r.data))
-                logger.info('Built Response: {}'.format(response.__repr__()))
+                logger.debug('Built Response: {}'.format(response.__repr__()))
                 return response
             except Exception as e:
                 logger.error('Encountered error while parsing response: {}'.format(str(e)))
