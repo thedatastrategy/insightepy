@@ -7,8 +7,11 @@ class Extractor(object):
     def _validate_params(self) -> None:
         pass
 
-    def to_dict(self) -> Dict:
-        pass
+    def to_dict(self) -> Dict[str, str]:
+        return dict(
+            label=self._label_,
+            name=self.name,
+        )
 
 
 class NGram(Extractor):
@@ -38,15 +41,6 @@ class HashTag(Extractor):
         self.name = name
         self._validate_params()
 
-    def _validate_params(self):
-        pass
-
-    def to_dict(self):
-        return dict(
-            label=self._label_,
-            name=self.name,
-        )
-
 
 class Mention(Extractor):
     _label_ = 'Mention'
@@ -55,11 +49,76 @@ class Mention(Extractor):
         self.name = name
         self._validate_params()
 
-    def _validate_params(self):
-        pass
+
+class Url(Extractor):
+    _label_ = 'Url'
+
+    def __init__(self, name='url'):
+        self.name = name
+        self._validate_params()
+
+
+class Stemmer(Extractor):
+    _label_ = 'Stemmer'
+
+    def __init__(self, name='stem'):
+        self.name = name
+        self._validate_params()
+
+
+class Sentiment(Extractor):
+    _label_ = 'Sentiment'
+
+    def __init__(self, name='sentiment'):
+        self.name = name
+        self._validate_params()
+
+
+class POS(Extractor):
+    _label_ = 'POS'
+
+    def __init__(self, name='pos'):
+        self.name = name
+        self._validate_params()
+
+
+class Ontology(Extractor):
+    _label_ = 'Ontology'
+
+    def __init__(self, name='ontology', from_='lem'):
+        self.name = name
+        self.from_ = from_
+        self._validate_params()
 
     def to_dict(self):
         return dict(
             label=self._label_,
             name=self.name,
+            from_=self.from_
         )
+
+
+class Lemmer(Extractor):
+    _label_ = 'Lemmer'
+
+    def __init__(self, name='lem', if_remove_stopwords=True, if_remove_noise=True):
+        self.name = name
+        self.if_remove_noise = if_remove_noise
+        self.if_remove_stopwords = if_remove_stopwords
+        self._validate_params()
+
+    def to_dict(self):
+        return dict(
+            label=self._label_,
+            name=self.name,
+            if_remove_noise=self.if_remove_noise,
+            if_remove_stopwords=self.if_remove_stopwords
+        )
+
+
+class Keyword(Extractor):
+    _label_ = 'Keyword'
+
+    def __init__(self, name='keyword'):
+        self.name = name
+        self._validate_params()
