@@ -46,7 +46,7 @@ class HashTag(Extractor):
 
 
 class Mention(Extractor):
-    label = 'Mention'
+    label = 'mention'
 
     def __init__(self, name='mention'):
         self.name = name
