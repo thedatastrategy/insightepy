@@ -4,6 +4,9 @@ from insightepy.errors import InvalidParameterException
 
 
 class Extractor(object):
+    label = None
+    name = None
+
     def _validate_params(self) -> None:
         pass
 
@@ -15,7 +18,7 @@ class Extractor(object):
 
 
 class NGram(Extractor):
-    label = 'NGram'
+    label = 'ngram'
 
     def __init__(self, name='ngram', n=3):
         self.name = name
@@ -35,7 +38,7 @@ class NGram(Extractor):
 
 
 class HashTag(Extractor):
-    label = 'HashTag'
+    label = 'hashtag'
 
     def __init__(self, name='hashtag'):
         self.name = name
@@ -51,7 +54,7 @@ class Mention(Extractor):
 
 
 class Url(Extractor):
-    label = 'Url'
+    label = 'url'
 
     def __init__(self, name='url'):
         self.name = name
@@ -59,7 +62,7 @@ class Url(Extractor):
 
 
 class Stemmer(Extractor):
-    label = 'Stemmer'
+    label = 'stem'
 
     def __init__(self, name='stem'):
         self.name = name
@@ -67,7 +70,7 @@ class Stemmer(Extractor):
 
 
 class Sentiment(Extractor):
-    label = 'Sentiment'
+    label = 'sentiment'
 
     def __init__(self, name='sentiment'):
         self.name = name
@@ -75,7 +78,7 @@ class Sentiment(Extractor):
 
 
 class POS(Extractor):
-    label = 'POS'
+    label = 'pos'
 
     def __init__(self, name='pos'):
         self.name = name
@@ -83,7 +86,7 @@ class POS(Extractor):
 
 
 class Ontology(Extractor):
-    label = 'Ontology'
+    label = 'ontology'
 
     def __init__(self, name='ontology', from_='lem'):
         self.name = name
@@ -99,7 +102,7 @@ class Ontology(Extractor):
 
 
 class Lemmer(Extractor):
-    label = 'Lemmer'
+    label = 'lem'
 
     def __init__(self, name='lem', if_remove_stopwords=True, if_remove_noise=True):
         self.name = name
@@ -117,7 +120,7 @@ class Lemmer(Extractor):
 
 
 class Keyword(Extractor):
-    label = 'Keyword'
+    label = 'keyword'
 
     def __init__(self, name='keyword'):
         self.name = name
